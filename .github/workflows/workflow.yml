@@ -1,29 +1,27 @@
-name: GitHub Pages Deploy
+name: Github Pages Deploy
 
-# on, To automatically trigger a workflow, use on to define which events can cause the workflow to run.
-# either on: push or on: pull or on: [push, fork]
-on: 
+on:
   push:
     branches:
-      - master
+      - 'master'
 
-# a workflow run is made up of one or more jobs, which run in parallel by default.
 jobs:
   build:
-    runs-on: ubuntu-latest # Server to run the deployment process
-    strategy: # to create build matrix your jobs which eventually is your app version
-      matrix:
-        node-version: [15.x, 16.x, 17.x]
+    runs-on: ubuntu-latest
 
-    steps: # A job contains a sequence of tasks called steps, 
+    strategy:
+      matrix:
+        node-version: [15.x, 16.x]
+
+    steps:
       - name: Checkout
-        uses: actions/checkout@v3 # set up the built-in actions to run your workflow
+        uses: actions/checkout@v1
 
       - name: Install and build
-        run: npm install && npm run build #run the command-line programs 
+        run: npm install && npm run build
 
-      - name: Deploy # https://github.com/JamesIves/github-pages-deploy-action special way to deploy to github pages
-         uses: JamesIves/github-pages-deploy-action@v4.2.5
-          with: # the input parameters (defined by JamesIves/github-pages-deploy-action@v4.2.5) to pass to the action
-            branch: gh-pages # The branch the action should deploy to.
-            folder: build # The folder the action should deploy.
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
